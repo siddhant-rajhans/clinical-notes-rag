@@ -38,12 +38,12 @@ Measured on 220 synthetic clinical notes (10 specialties, 902 chunks) with 40 re
 
 ## Key features
 
-- **Domain embeddings**: BioClinicalBERT (`emilyalsentzer/Bio_ClinicalBERT`) trained on MIMIC-III clinical notes, outperforming general-purpose embeddings on medical terminology
-- **Clinical-aware chunking**: splits on section headers (HISTORY, EXAMINATION, ASSESSMENT, PLAN) before recursive character splitting, preserving clinical document structure
+- **Domain embeddings**: pluggable embedding backend; evaluated with `all-MiniLM-L6-v2` (384-dim), with `BioClinicalBERT` supported for production clinical use
+- **Clinical-aware chunking**: splits on section headers (HISTORY, EXAMINATION, ASSESSMENT AND PLAN, etc.) before recursive character splitting, preserving clinical document structure
 - **Two-stage retrieval**: FAISS dense retrieval (top 20) followed by cross-encoder reranking (`ms-marco-MiniLM-L-12-v2`) to top 5
-- **Grounding check**: NLI-based verification scores each answer sentence against retrieved context; answers below the entailment threshold are refused
+- **Grounding check**: NLI-based verification (`nli-deberta-v3-base`) scores each answer sentence against retrieved context; embedding similarity proxy available as a lightweight alternative
 - **LangGraph pipeline**: stateful graph with retrieve, grade, generate, and ground nodes for clean control flow
-- **RAGAS evaluation**: measures faithfulness, answer correctness, context precision, and context recall on 50 labeled questions
+- **Offline evaluation**: end-to-end eval script generates synthetic clinical notes, measures retrieval recall and grounding accuracy without requiring an LLM API
 
 ## Setup
 
@@ -142,8 +142,7 @@ clinical-notes-rag/
 ## Tech stack
 
 - **LangGraph** - stateful RAG pipeline orchestration
-- **BioClinicalBERT** - clinical domain embeddings via sentence-transformers
+- **sentence-transformers** - embedding backend (tested: `all-MiniLM-L6-v2`; configurable to BioClinicalBERT)
 - **FAISS** - vector similarity search (flat IP or IVF)
-- **Cross-encoder** - reranking and NLI-based grounding
-- **RAGAS** - retrieval and generation evaluation framework
-- **LangChain/OpenAI** - LLM generation with GPT-4o-mini
+- **Cross-encoder** - reranking (`ms-marco-MiniLM-L-12-v2`) and NLI grounding (`nli-deberta-v3-base`)
+- **LangChain/OpenAI** - LLM generation with GPT-4o-mini (requires API key)
