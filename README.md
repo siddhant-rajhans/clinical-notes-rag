@@ -21,15 +21,20 @@ graph LR
 
 ## Results
 
-| Metric | Value |
-|---|---|
-| Corpus size | 15K clinical note chunks |
-| Evaluation questions | 50 labeled QA pairs |
-| Recall@10 | **87%** |
-| Faithfulness (RAGAS) | **0.91** |
-| Answer correctness | **0.84** |
-| Context precision | **0.82** |
-| Unsupported answers cut by grounding check | **62%** |
+Measured on 220 synthetic clinical notes (10 specialties, 902 chunks) with 40 retrieval queries and 8 grounding test pairs. Embedding model: `all-MiniLM-L6-v2`.
+
+| Metric | Value | How measured |
+|---|---|---|
+| Corpus | 220 notes, 902 chunks | Synthetic notes across 10 conditions |
+| Recall@5 | **100%** (40/40) | Correct condition in top 5 retrieved chunks |
+| Recall@10 | **100%** (40/40) | Correct condition in top 10 retrieved chunks |
+| Mean retrieval latency | **23.8 ms** | FAISS flat inner-product search |
+| P95 retrieval latency | **27.4 ms** | Measured over 40 queries |
+| Grounded answer detection | **100%** (8/8) | Embedding similarity >= 0.65 threshold |
+| Ungrounded answer rejection | **100%** (8/8) | Embedding similarity < 0.65 threshold |
+| Grounded vs ungrounded separation | **0.365** | Mean similarity: 0.790 vs 0.426 |
+
+**Caveats**: The high recall reflects that 10 distinct conditions are easy to discriminate with embeddings; a production corpus with overlapping conditions and subtler distinctions would yield lower recall. RAGAS faithfulness and answer correctness require LLM generation (OpenAI API) and are not included in the offline eval above. The NLI grounding model (`nli-deberta-v3-base`) is supported in the codebase but was substituted with embedding similarity for this evaluation due to disk constraints.
 
 ## Key features
 
