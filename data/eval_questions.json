@@ -1,0 +1,406 @@
+{
+  "description": "Labeled QA evaluation dataset for Clinical Notes RAG. Questions sourced from MTSamples clinical note themes.",
+  "version": "1.0",
+  "questions": [
+    {
+      "question_id": "q01",
+      "question": "What are the common indications for a rotator cuff repair procedure?",
+      "expected_answer": "Common indications include full-thickness rotator cuff tears causing pain and functional impairment, failed conservative management with physical therapy, significant weakness in shoulder abduction or external rotation, and MRI-confirmed supraspinatus or infraspinatus tears.",
+      "relevant_note_ids": ["mt-1", "mt-15", "mt-42"],
+      "specialty": "Orthopedics",
+      "difficulty": "easy"
+    },
+    {
+      "question_id": "q02",
+      "question": "What medications are typically prescribed for a patient with Type 2 diabetes and hypertension?",
+      "expected_answer": "Typical medications include metformin as first-line for glucose control, an ACE inhibitor or ARB for blood pressure management and renal protection, and often a statin for cardiovascular risk reduction. Glucose monitoring and HbA1c targets guide therapy adjustments.",
+      "relevant_note_ids": ["mt-3", "mt-22", "mt-67"],
+      "specialty": "Internal Medicine",
+      "difficulty": "easy"
+    },
+    {
+      "question_id": "q03",
+      "question": "Describe the typical findings on physical examination for a patient with acute appendicitis.",
+      "expected_answer": "Typical findings include right lower quadrant tenderness at McBurney's point, rebound tenderness, guarding, positive Rovsing sign, and possibly a low-grade fever. Lab findings often show elevated WBC with left shift.",
+      "relevant_note_ids": ["mt-5", "mt-31"],
+      "specialty": "General Surgery",
+      "difficulty": "easy"
+    },
+    {
+      "question_id": "q04",
+      "question": "What is the recommended post-operative care following total knee arthroplasty?",
+      "expected_answer": "Post-operative care includes early mobilization within 24 hours, continuous passive motion exercises, DVT prophylaxis with low-molecular-weight heparin, pain management with multimodal analgesia, physical therapy for range of motion and strengthening, and wound care monitoring for signs of infection.",
+      "relevant_note_ids": ["mt-8", "mt-44", "mt-51"],
+      "specialty": "Orthopedics",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q05",
+      "question": "What cardiac workup is indicated for a patient presenting with exertional chest pain?",
+      "expected_answer": "Workup includes 12-lead ECG, cardiac biomarkers (troponin), stress testing (exercise or pharmacologic), echocardiography for wall motion and ejection fraction, and potentially coronary angiography if non-invasive testing suggests significant ischemia.",
+      "relevant_note_ids": ["mt-10", "mt-29", "mt-55"],
+      "specialty": "Cardiology",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q06",
+      "question": "How is a lumbar laminectomy typically performed and what are the indications?",
+      "expected_answer": "Lumbar laminectomy is indicated for spinal stenosis causing neurogenic claudication or radiculopathy failing conservative treatment. The procedure involves midline posterior approach, removal of the lamina and ligamentum flavum to decompress neural elements, with preservation of facet joints for stability.",
+      "relevant_note_ids": ["mt-12", "mt-38"],
+      "specialty": "Neurosurgery",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q07",
+      "question": "What are the key components of a psychiatric evaluation for major depressive disorder?",
+      "expected_answer": "Key components include assessment of mood, affect, sleep patterns, appetite changes, concentration, anhedonia, psychomotor retardation or agitation, suicidal ideation, PHQ-9 scoring, review of prior episodes and family history, and evaluation for comorbid anxiety or substance use.",
+      "relevant_note_ids": ["mt-14", "mt-47"],
+      "specialty": "Psychiatry",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q08",
+      "question": "What laboratory findings indicate diabetic ketoacidosis?",
+      "expected_answer": "DKA is characterized by blood glucose above 250 mg/dL, arterial pH below 7.3, serum bicarbonate below 18 mEq/L, elevated anion gap, presence of serum and urine ketones, and often elevated BUN and creatinine. Potassium may be initially normal or elevated despite total body depletion.",
+      "relevant_note_ids": ["mt-3", "mt-22", "mt-60"],
+      "specialty": "Endocrinology",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q09",
+      "question": "What are the stages of chronic kidney disease based on GFR?",
+      "expected_answer": "CKD stages: Stage 1 (GFR >= 90, kidney damage with normal function), Stage 2 (GFR 60-89, mild decrease), Stage 3a (GFR 45-59), Stage 3b (GFR 30-44, moderate decrease), Stage 4 (GFR 15-29, severe decrease), Stage 5 (GFR < 15, kidney failure requiring dialysis or transplant).",
+      "relevant_note_ids": ["mt-18", "mt-33"],
+      "specialty": "Nephrology",
+      "difficulty": "easy"
+    },
+    {
+      "question_id": "q10",
+      "question": "How is a colonoscopy typically documented and what are common findings?",
+      "expected_answer": "Documentation includes patient preparation quality (Boston Bowel Prep Scale), scope insertion to cecum with landmarks identified, withdrawal time (minimum 6 minutes), and findings such as polyps (size, morphology, location), diverticula, hemorrhoids, inflammation, or masses. Biopsies and polypectomy details are recorded.",
+      "relevant_note_ids": ["mt-20", "mt-52"],
+      "specialty": "Gastroenterology",
+      "difficulty": "easy"
+    },
+    {
+      "question_id": "q11",
+      "question": "What are the differential diagnoses for acute abdominal pain in the right upper quadrant?",
+      "expected_answer": "Differentials include acute cholecystitis, choledocholithiasis, hepatitis, liver abscess, right lower lobe pneumonia, peptic ulcer disease, Fitz-Hugh-Curtis syndrome, and right kidney pathology. Murphy sign and ultrasound findings help narrow the diagnosis.",
+      "relevant_note_ids": ["mt-5", "mt-25", "mt-41"],
+      "specialty": "Emergency Medicine",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q12",
+      "question": "What is the standard approach to managing a patient with COPD exacerbation?",
+      "expected_answer": "Management includes supplemental oxygen targeting SpO2 88-92%, nebulized short-acting bronchodilators (albuterol and ipratropium), systemic corticosteroids (prednisone 40mg for 5 days), antibiotics if purulent sputum or signs of infection, and consideration of non-invasive ventilation (BiPAP) for respiratory acidosis.",
+      "relevant_note_ids": ["mt-7", "mt-35", "mt-58"],
+      "specialty": "Pulmonology",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q13",
+      "question": "What pre-operative assessment is needed before an elective surgical procedure?",
+      "expected_answer": "Pre-operative assessment includes history and physical examination, airway evaluation (Mallampati score), cardiac risk stratification (revised cardiac risk index), baseline labs (CBC, BMP, coagulation), medication review with instructions on holding anticoagulants, NPO guidelines, and informed consent documentation.",
+      "relevant_note_ids": ["mt-9", "mt-30", "mt-48"],
+      "specialty": "Anesthesiology",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q14",
+      "question": "How is carpal tunnel syndrome diagnosed and treated?",
+      "expected_answer": "Diagnosis involves clinical history of nocturnal hand numbness in median nerve distribution, positive Tinel and Phalen tests, and nerve conduction studies showing prolonged distal sensory latency. Treatment ranges from wrist splinting and corticosteroid injection for mild cases to surgical carpal tunnel release for refractory symptoms.",
+      "relevant_note_ids": ["mt-16", "mt-43"],
+      "specialty": "Orthopedics",
+      "difficulty": "easy"
+    },
+    {
+      "question_id": "q15",
+      "question": "What are the criteria for diagnosing metabolic syndrome?",
+      "expected_answer": "Metabolic syndrome requires three of five criteria: waist circumference > 40 inches (men) or > 35 inches (women), triglycerides >= 150 mg/dL, HDL < 40 mg/dL (men) or < 50 mg/dL (women), blood pressure >= 130/85 mmHg, and fasting glucose >= 100 mg/dL.",
+      "relevant_note_ids": ["mt-3", "mt-22", "mt-37"],
+      "specialty": "Endocrinology",
+      "difficulty": "easy"
+    },
+    {
+      "question_id": "q16",
+      "question": "What imaging findings are characteristic of a pulmonary embolism on CT angiography?",
+      "expected_answer": "CT pulmonary angiography shows filling defects within pulmonary arteries, the 'polo mint' sign on axial images (contrast surrounding central clot), right heart strain with RV/LV ratio > 1.0, and possible pleural effusion. Saddle embolus at the main pulmonary artery bifurcation indicates massive PE.",
+      "relevant_note_ids": ["mt-11", "mt-35", "mt-56"],
+      "specialty": "Radiology",
+      "difficulty": "hard"
+    },
+    {
+      "question_id": "q17",
+      "question": "How is a thyroidectomy documented in operative notes?",
+      "expected_answer": "Operative documentation includes indication (malignancy, Graves disease, compressive goiter), extent (total vs. lobectomy), identification and preservation of recurrent laryngeal nerves with intraoperative nerve monitoring, parathyroid gland identification and preservation or reimplantation, hemostasis, drain placement, and specimen disposition for pathology.",
+      "relevant_note_ids": ["mt-23", "mt-49"],
+      "specialty": "General Surgery",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q18",
+      "question": "What are the clinical features and management of acute pancreatitis?",
+      "expected_answer": "Features include epigastric pain radiating to the back, nausea, vomiting, elevated lipase (>3x normal), and possible organ dysfunction. Management includes aggressive IV fluid resuscitation, pain control, NPO initially with early oral feeding as tolerated, monitoring for complications (necrosis, pseudocyst), and addressing etiology (gallstone vs. alcohol).",
+      "relevant_note_ids": ["mt-20", "mt-36", "mt-54"],
+      "specialty": "Gastroenterology",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q19",
+      "question": "What is the evaluation approach for a new-onset seizure in an adult?",
+      "expected_answer": "Evaluation includes detailed history of the event and witnesses, neurological examination, serum glucose and electrolytes, toxicology screen, brain MRI with epilepsy protocol, EEG, and consideration of lumbar puncture if infection is suspected. Provoked causes (alcohol withdrawal, metabolic derangement) should be excluded before diagnosing epilepsy.",
+      "relevant_note_ids": ["mt-13", "mt-39", "mt-57"],
+      "specialty": "Neurology",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q20",
+      "question": "How is a cesarean section performed and documented?",
+      "expected_answer": "Documentation includes indication, anesthesia type (typically spinal), Pfannenstiel skin incision, sharp and blunt dissection through layers, low transverse uterine incision, delivery with Apgar scores, placenta delivery, uterine closure in layers, verification of hemostasis, correct sponge and instrument counts, and estimated blood loss.",
+      "relevant_note_ids": ["mt-21", "mt-46"],
+      "specialty": "Obstetrics",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q21",
+      "question": "What are the dermatologic findings suggestive of systemic lupus erythematosus?",
+      "expected_answer": "Findings include malar (butterfly) rash sparing nasolabial folds, discoid lupus lesions, photosensitivity, oral or nasal ulcers, non-scarring alopecia, and Raynaud phenomenon. Biopsy may show interface dermatitis with IgG and complement deposition on direct immunofluorescence (lupus band test).",
+      "relevant_note_ids": ["mt-17", "mt-40"],
+      "specialty": "Dermatology",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q22",
+      "question": "What findings on echocardiogram suggest heart failure with reduced ejection fraction?",
+      "expected_answer": "Echocardiographic findings include LVEF below 40%, left ventricular dilation, global or regional wall motion abnormalities, elevated E/e' ratio indicating elevated filling pressures, possible mitral regurgitation, and potentially right ventricular dilation with tricuspid regurgitation and elevated RVSP.",
+      "relevant_note_ids": ["mt-10", "mt-29", "mt-53"],
+      "specialty": "Cardiology",
+      "difficulty": "hard"
+    },
+    {
+      "question_id": "q23",
+      "question": "How is an inguinal hernia repair performed laparoscopically?",
+      "expected_answer": "Laparoscopic inguinal hernia repair (TEP or TAPP) involves general anesthesia, port placement, dissection of the preperitoneal space, reduction of the hernia sac, identification of the myopectineal orifice and cord structures, placement of a polypropylene mesh covering the direct, indirect, and femoral spaces, and fixation with tacks or fibrin glue.",
+      "relevant_note_ids": ["mt-5", "mt-32", "mt-50"],
+      "specialty": "General Surgery",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q24",
+      "question": "What are the components of a comprehensive eye examination for diabetic retinopathy screening?",
+      "expected_answer": "Components include visual acuity testing, pupil dilation, slit-lamp examination, fundoscopic examination for microaneurysms, hard exudates, cotton-wool spots, intraretinal hemorrhages, venous beading, neovascularization, and macular edema. Optical coherence tomography (OCT) quantifies macular thickness. Severity grading follows the ETDRS scale.",
+      "relevant_note_ids": ["mt-19", "mt-45"],
+      "specialty": "Ophthalmology",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q25",
+      "question": "What is the antibiotic selection for community-acquired pneumonia in hospitalized patients?",
+      "expected_answer": "For non-ICU hospitalized patients: a respiratory fluoroquinolone (levofloxacin) or a beta-lactam (ceftriaxone or ampicillin-sulbactam) plus a macrolide (azithromycin). For ICU patients: a beta-lactam plus either a respiratory fluoroquinolone or a macrolide. If MRSA risk: add vancomycin or linezolid.",
+      "relevant_note_ids": ["mt-7", "mt-34", "mt-58"],
+      "specialty": "Infectious Disease",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q26",
+      "question": "How is spinal anesthesia administered and documented?",
+      "expected_answer": "Documentation includes patient positioning (sitting or lateral decubitus), sterile preparation, local anesthesia at insertion site, needle type and gauge (typically 25G Whitacre), interspace level (L3-L4 or L4-L5), CSF confirmation, agent and dose (e.g., bupivacaine 0.75% 1.5mL), sensory level achieved, and hemodynamic monitoring.",
+      "relevant_note_ids": ["mt-9", "mt-30"],
+      "specialty": "Anesthesiology",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q27",
+      "question": "What are the key findings in a pathology report for breast cancer?",
+      "expected_answer": "Key findings include tumor type (invasive ductal vs. lobular), grade (Nottingham score), tumor size, surgical margin status, lymphovascular invasion, lymph node involvement with number positive, ER/PR receptor status, HER2 status, Ki-67 proliferation index, and TNM staging. These determine prognosis and guide adjuvant therapy decisions.",
+      "relevant_note_ids": ["mt-24", "mt-48"],
+      "specialty": "Pathology",
+      "difficulty": "hard"
+    },
+    {
+      "question_id": "q28",
+      "question": "What rehabilitation protocol follows ACL reconstruction?",
+      "expected_answer": "Rehabilitation includes phase 1 (0-2 weeks): knee immobilizer, quadriceps activation, weight bearing as tolerated; phase 2 (2-6 weeks): ROM exercises, stationary bike; phase 3 (6-12 weeks): strengthening, proprioception training; phase 4 (3-6 months): sport-specific drills; return to sport at 9-12 months with clearance testing including hop tests and strength symmetry.",
+      "relevant_note_ids": ["mt-8", "mt-43", "mt-51"],
+      "specialty": "Physical Medicine",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q29",
+      "question": "What are the treatment options for atrial fibrillation?",
+      "expected_answer": "Treatment includes rate control (beta-blockers, calcium channel blockers, digoxin), rhythm control (antiarrhythmics such as amiodarone or flecainide, cardioversion, catheter ablation), and anticoagulation based on CHA2DS2-VASc score (DOACs preferred over warfarin). Left atrial appendage occlusion is an alternative for patients who cannot tolerate anticoagulation.",
+      "relevant_note_ids": ["mt-10", "mt-28", "mt-55"],
+      "specialty": "Cardiology",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q30",
+      "question": "How is a urinalysis interpreted in the context of urinary tract infection?",
+      "expected_answer": "UTI findings include positive leukocyte esterase, positive nitrites (gram-negative bacteria), pyuria (>10 WBC/hpf), bacteriuria on microscopy, and possibly hematuria. Culture confirmation shows >100,000 CFU/mL of a single organism. Contamination is suggested by mixed flora, squamous epithelial cells, or low colony counts.",
+      "relevant_note_ids": ["mt-26", "mt-59"],
+      "specialty": "Urology",
+      "difficulty": "easy"
+    },
+    {
+      "question_id": "q31",
+      "question": "What are the features of a normal newborn assessment?",
+      "expected_answer": "Assessment includes Apgar scores at 1 and 5 minutes, weight/length/head circumference with percentiles, vital signs, skin assessment (color, birthmarks), head (fontanelles, molding), eyes (red reflex), cardiac auscultation, abdominal exam (cord clamp), hip examination (Barlow/Ortolani), genitalia, reflexes (Moro, suck, grasp), and gestational age assessment.",
+      "relevant_note_ids": ["mt-21", "mt-46", "mt-61"],
+      "specialty": "Pediatrics",
+      "difficulty": "easy"
+    },
+    {
+      "question_id": "q32",
+      "question": "What imaging protocol is used for suspected stroke?",
+      "expected_answer": "Initial non-contrast CT head excludes hemorrhage. CT angiography identifies large vessel occlusion. CT perfusion maps ischemic core versus penumbra to guide intervention. For posterior circulation or when CT is equivocal, MRI with diffusion-weighted imaging (DWI) is most sensitive. Door-to-imaging target is under 25 minutes.",
+      "relevant_note_ids": ["mt-11", "mt-39", "mt-56"],
+      "specialty": "Radiology",
+      "difficulty": "hard"
+    },
+    {
+      "question_id": "q33",
+      "question": "How is chronic pain managed in a multidisciplinary setting?",
+      "expected_answer": "Multidisciplinary approach includes pharmacologic management (NSAIDs, gabapentinoids, SNRIs, limited opioid use), physical therapy and exercise programs, cognitive behavioral therapy for pain coping, interventional procedures (nerve blocks, epidural steroid injections), and complementary approaches (acupuncture, mindfulness). Treatment plans are individualized with regular reassessment.",
+      "relevant_note_ids": ["mt-14", "mt-38", "mt-47"],
+      "specialty": "Pain Medicine",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q34",
+      "question": "What are the complications of total hip arthroplasty?",
+      "expected_answer": "Complications include dislocation (most common early complication), periprosthetic fracture, deep vein thrombosis and pulmonary embolism, surgical site infection, leg length discrepancy, heterotopic ossification, sciatic nerve injury, aseptic loosening (late complication), and prosthetic joint infection requiring staged revision.",
+      "relevant_note_ids": ["mt-8", "mt-44"],
+      "specialty": "Orthopedics",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q35",
+      "question": "What is the management of acute upper GI bleeding?",
+      "expected_answer": "Management includes hemodynamic resuscitation with IV fluids and blood products, IV proton pump inhibitor (pantoprazole 80mg bolus then 8mg/hr), urgent endoscopy within 24 hours (12 hours if hemodynamically unstable), endoscopic hemostasis (epinephrine injection, clips, thermal coagulation), and risk stratification using Glasgow-Blatchford or Rockall scores.",
+      "relevant_note_ids": ["mt-20", "mt-36"],
+      "specialty": "Gastroenterology",
+      "difficulty": "hard"
+    },
+    {
+      "question_id": "q36",
+      "question": "How is asthma severity classified and managed in children?",
+      "expected_answer": "Classification: intermittent (symptoms <=2 days/week), mild persistent (>2 days/week), moderate persistent (daily symptoms), severe persistent (throughout the day). Stepwise therapy: Step 1 SABA PRN, Step 2 low-dose ICS, Step 3 medium-dose ICS or low-dose ICS + LABA, Step 4 medium-dose ICS + LABA, Step 5 high-dose ICS + LABA with consideration of biologics.",
+      "relevant_note_ids": ["mt-7", "mt-27", "mt-62"],
+      "specialty": "Pediatric Pulmonology",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q37",
+      "question": "What are the components of a comprehensive metabolic panel and their clinical significance?",
+      "expected_answer": "CMP includes sodium (fluid balance), potassium (cardiac function), chloride, CO2 (acid-base), BUN and creatinine (renal function with GFR calculation), glucose (metabolic status), calcium (bone/parathyroid), total protein, albumin (nutritional status and liver synthetic function), and liver enzymes AST/ALT (hepatocellular injury), ALP and bilirubin (cholestasis).",
+      "relevant_note_ids": ["mt-3", "mt-18", "mt-33"],
+      "specialty": "Laboratory Medicine",
+      "difficulty": "easy"
+    },
+    {
+      "question_id": "q38",
+      "question": "What is the surgical approach and documentation for cataract extraction?",
+      "expected_answer": "Phacoemulsification documentation includes topical or peribulbar anesthesia, clear corneal incision, continuous curvilinear capsulorhexis, hydrodissection, phacoemulsification of nucleus with chopping technique, irrigation-aspiration of cortex, posterior chamber intraocular lens insertion (model, power, and target refraction), and wound hydration. Uncomplicated procedure is documented as no posterior capsule rupture or vitreous loss.",
+      "relevant_note_ids": ["mt-19", "mt-45"],
+      "specialty": "Ophthalmology",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q39",
+      "question": "How are electrolyte imbalances corrected in hospitalized patients?",
+      "expected_answer": "Hyponatremia: fluid restriction for euvolemic, IV saline for hypovolemic, correction rate <10 mEq/L per 24h to prevent osmotic demyelination. Hypokalemia: IV KCl 10-20 mEq/hr with cardiac monitoring, check magnesium. Hyperkalemia: calcium gluconate for cardiac protection, insulin with dextrose, kayexalate, and dialysis for severe cases. Hypercalcemia: IV saline, calcitonin, bisphosphonates.",
+      "relevant_note_ids": ["mt-18", "mt-33", "mt-60"],
+      "specialty": "Internal Medicine",
+      "difficulty": "hard"
+    },
+    {
+      "question_id": "q40",
+      "question": "What are the key elements of a discharge summary?",
+      "expected_answer": "Key elements include admission diagnosis and date, hospital course summary, procedures performed, significant findings, condition at discharge, discharge diagnoses, medications with changes highlighted, follow-up appointments, patient education provided, pending test results, and activity/diet restrictions. It serves as the primary communication to outpatient providers.",
+      "relevant_note_ids": ["mt-2", "mt-30"],
+      "specialty": "Hospital Medicine",
+      "difficulty": "easy"
+    },
+    {
+      "question_id": "q41",
+      "question": "What is the management of an acute asthma exacerbation in the emergency department?",
+      "expected_answer": "Management includes continuous pulse oximetry, nebulized albuterol every 20 minutes for 3 doses then reassess, ipratropium bromide for severe exacerbation, systemic corticosteroids (IV methylprednisolone or oral prednisone), magnesium sulfate 2g IV for near-fatal asthma, and reassessment with peak flow measurements. Intubation criteria include respiratory failure despite maximal therapy.",
+      "relevant_note_ids": ["mt-7", "mt-27", "mt-35"],
+      "specialty": "Emergency Medicine",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q42",
+      "question": "How is a transesophageal echocardiogram performed and what are common indications?",
+      "expected_answer": "TEE involves conscious sedation, topical pharyngeal anesthesia, passage of the ultrasound probe into the esophagus for high-resolution cardiac imaging. Indications include evaluation of valvular disease (especially mitral), infective endocarditis vegetations, intracardiac thrombus (especially left atrial appendage before cardioversion), aortic dissection, and intraoperative guidance during cardiac surgery.",
+      "relevant_note_ids": ["mt-10", "mt-29"],
+      "specialty": "Cardiology",
+      "difficulty": "hard"
+    },
+    {
+      "question_id": "q43",
+      "question": "What is the clinical presentation and treatment of cellulitis?",
+      "expected_answer": "Presentation includes erythema, warmth, swelling, and tenderness of affected skin, often with poorly defined borders. Systemic signs may include fever and leukocytosis. Treatment: oral antibiotics covering streptococci and staphylococci (cephalexin or dicloxacillin) for mild cases, IV antibiotics (cefazolin or vancomycin if MRSA suspected) for severe cases, limb elevation, and marking the erythema borders to track progression.",
+      "relevant_note_ids": ["mt-17", "mt-34"],
+      "specialty": "Dermatology",
+      "difficulty": "easy"
+    },
+    {
+      "question_id": "q44",
+      "question": "What neurological assessments are documented for a patient with traumatic brain injury?",
+      "expected_answer": "Documentation includes Glasgow Coma Scale (eye, verbal, motor components), pupil size and reactivity, cranial nerve examination, motor strength and symmetry, Cushing triad assessment (hypertension, bradycardia, irregular respirations), CT head findings, ICP monitoring if indicated, and serial neurological checks. Classification as mild (GCS 13-15), moderate (9-12), or severe (3-8) TBI.",
+      "relevant_note_ids": ["mt-13", "mt-39"],
+      "specialty": "Neurosurgery",
+      "difficulty": "hard"
+    },
+    {
+      "question_id": "q45",
+      "question": "How is rheumatoid arthritis diagnosed and what are first-line treatments?",
+      "expected_answer": "Diagnosis is based on ACR/EULAR criteria: joint involvement pattern (symmetric small joints), serology (RF, anti-CCP antibodies), acute phase reactants (ESR, CRP), and duration >6 weeks. First-line treatment is methotrexate with folic acid supplementation. Adjuncts include short-term low-dose prednisone for bridging, hydroxychloroquine, and escalation to biologics (TNF inhibitors) for inadequate response.",
+      "relevant_note_ids": ["mt-16", "mt-40", "mt-43"],
+      "specialty": "Rheumatology",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q46",
+      "question": "What are the documentation requirements for procedural sedation?",
+      "expected_answer": "Requirements include pre-procedure assessment (ASA classification, airway evaluation, NPO status), informed consent, monitoring (continuous SpO2, capnography, ECG, blood pressure), medication doses and timing, level of sedation achieved (using Ramsay or MOAA/S scale), complications, recovery to baseline, and discharge criteria met. Time-based documentation of all assessments is standard.",
+      "relevant_note_ids": ["mt-9", "mt-30", "mt-48"],
+      "specialty": "Anesthesiology",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q47",
+      "question": "What is the evaluation of a thyroid nodule?",
+      "expected_answer": "Evaluation includes TSH level, thyroid ultrasound with TI-RADS classification, fine needle aspiration biopsy for nodules meeting size and suspicion criteria, Bethesda cytology reporting, and molecular testing for indeterminate cytology. Suspicious features on ultrasound include hypoechogenicity, microcalcifications, irregular margins, taller-than-wide shape, and extrathyroidal extension.",
+      "relevant_note_ids": ["mt-23", "mt-49"],
+      "specialty": "Endocrinology",
+      "difficulty": "medium"
+    },
+    {
+      "question_id": "q48",
+      "question": "How is a ventilator-associated pneumonia diagnosed and treated?",
+      "expected_answer": "Diagnosis requires new or progressive infiltrate on chest imaging plus clinical signs (fever, purulent secretions, leukocytosis, declining oxygenation) after >48 hours of mechanical ventilation. Obtain lower respiratory tract cultures before antibiotics. Empiric treatment covers Pseudomonas, MRSA, and gram-negatives: piperacillin-tazobactam or cefepime plus vancomycin, de-escalated based on cultures. Treatment duration is typically 7 days.",
+      "relevant_note_ids": ["mt-7", "mt-34", "mt-58"],
+      "specialty": "Critical Care",
+      "difficulty": "hard"
+    },
+    {
+      "question_id": "q49",
+      "question": "What genetic tests are relevant for hereditary cancer screening?",
+      "expected_answer": "Key tests include BRCA1/BRCA2 for hereditary breast and ovarian cancer, Lynch syndrome panel (MLH1, MSH2, MSH6, PMS2, EPCAM) for colorectal and endometrial cancer, TP53 for Li-Fraumeni syndrome, APC for familial adenomatous polyposis, and multi-gene panel testing for patients meeting NCCN criteria. Genetic counseling before and after testing is standard of care.",
+      "relevant_note_ids": ["mt-24", "mt-48", "mt-63"],
+      "specialty": "Medical Genetics",
+      "difficulty": "hard"
+    },
+    {
+      "question_id": "q50",
+      "question": "What are the signs of pediatric dehydration and how is severity assessed?",
+      "expected_answer": "Signs include decreased urine output, dry mucous membranes, sunken fontanelle (infants), decreased skin turgor, tachycardia, and lethargy. Severity: mild (3-5% weight loss, slight thirst), moderate (6-9%, sunken eyes, decreased turgor), severe (>10%, hemodynamic instability, altered consciousness). Treatment is oral rehydration for mild-moderate and IV isotonic saline boluses for severe dehydration.",
+      "relevant_note_ids": ["mt-27", "mt-46", "mt-62"],
+      "specialty": "Pediatrics",
+      "difficulty": "easy"
+    }
+  ]
+}
