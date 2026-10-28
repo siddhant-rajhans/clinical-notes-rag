@@ -8,11 +8,11 @@ A retrieval-augmented generation pipeline for clinical notes that retrieves, rer
 
 ## Results
 
-Measured on 220 synthetic clinical notes (10 specialties, 902 chunks), 40 labeled retrieval queries, and 8 NLI grounding test pairs.
+Measured on 220 synthetic clinical notes (10 conditions across 8 specialties, 902 chunks), 40 labeled retrieval queries, and 8 NLI grounding test pairs.
 
 | Metric | Value |
 |--------|-------|
-| Corpus | 220 notes, 902 chunks, 10 specialties |
+| Corpus | 220 notes, 902 chunks, 10 conditions across 8 specialties |
 | Recall@5 | **100%** (40/40 queries) |
 | Recall@10 | **100%** (40/40 queries) |
 | Mean retrieval latency | **23.8 ms** |
