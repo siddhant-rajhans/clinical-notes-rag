@@ -66,7 +66,10 @@ def build_rag_graph(
                 relevant.append(doc)
 
         if not relevant and docs:
-            relevant = docs[:2]
+            logger.warning(
+                "No documents graded as relevant; returning all %d unfiltered", len(docs)
+            )
+            relevant = docs
 
         logger.info("Graded %d/%d documents as relevant", len(relevant), len(docs))
         return {"relevant_documents": relevant}

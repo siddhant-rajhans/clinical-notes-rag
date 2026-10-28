@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import re
 from dataclasses import dataclass
 
 from langchain_core.documents import Document
@@ -10,36 +11,65 @@ from clinical_rag.config import RAGConfig
 
 logger = logging.getLogger(__name__)
 
+_SENTENCE_END_RE = re.compile(r"(?<=[.!?])\s+")
+_ABBREVIATIONS = frozenset(
+    "dr mr mrs ms jr sr vs etc approx pt mg ml dl kg lb oz hr min sec "
+    "vol no dept div est govt inc ltd corp assn natl intl".split()
+)
+
 
 @dataclass
 class GroundingResult:
+    """Entailment score and per-sentence breakdown from the NLI grounding check."""
     score: float
     is_grounded: bool
     per_sentence_scores: list[float]
 
 
 class GroundingChecker:
-    """NLI-based grounding checker.
+    """NLI cross-encoder that scores whether an answer is entailed by retrieved context."""
 
-    Verifies whether a generated answer is entailed by the retrieved context
-    by scoring each answer sentence against the concatenated context with a
-    natural language inference cross-encoder.
-
-    Labels (nli-deberta-v3-base): 0 = contradiction, 1 = entailment, 2 = neutral.
-    """
-
-    ENTAILMENT_IDX = 1
+    _DEFAULT_ENTAILMENT_IDX = 1
 
     def __init__(self, config: RAGConfig | None = None):
         self.config = config or RAGConfig()
         self._model: CrossEncoder | None = None
+        self._entailment_idx: int | None = None
 
     @property
     def model(self) -> CrossEncoder:
         if self._model is None:
             logger.info("Loading grounding model: %s", self.config.grounding_model)
             self._model = CrossEncoder(self.config.grounding_model)
+            self._entailment_idx = self._detect_entailment_idx(self._model)
         return self._model
+
+    @property
+    def entailment_idx(self) -> int:
+        if self._entailment_idx is None:
+            self._entailment_idx = self._detect_entailment_idx(self.model)
+        return self._entailment_idx
+
+    @staticmethod
+    def _detect_entailment_idx(model: CrossEncoder) -> int:
+        """Read the model's label config to find the entailment class index."""
+        try:
+            cfg = model.model.config
+            if hasattr(cfg, "label2id"):
+                for label, idx in cfg.label2id.items():
+                    if label.lower() == "entailment":
+                        return int(idx)
+            if hasattr(cfg, "id2label"):
+                for idx, label in cfg.id2label.items():
+                    if label.lower() == "entailment":
+                        return int(idx)
+        except Exception:
+            pass
+        logger.warning(
+            "Could not detect entailment index from model config; falling back to %d",
+            GroundingChecker._DEFAULT_ENTAILMENT_IDX,
+        )
+        return GroundingChecker._DEFAULT_ENTAILMENT_IDX
 
     def check(
         self,
@@ -58,7 +88,7 @@ class GroundingChecker:
 
         per_sentence: list[float] = []
         for row in logits:
-            entailment_prob = float(row[self.ENTAILMENT_IDX])
+            entailment_prob = float(row[self.entailment_idx])
             per_sentence.append(entailment_prob)
 
         score = sum(per_sentence) / len(per_sentence)
@@ -80,8 +110,17 @@ class GroundingChecker:
 
 
 def _split_sentences(text: str) -> list[str]:
-    """Simple sentence splitter for clinical text."""
-    import re
+    """Split text into sentences, handling common clinical abbreviations."""
+    parts = _SENTENCE_END_RE.split(text.strip())
 
-    sentences = re.split(r"(?<=[.!?])\s+", text.strip())
-    return [s.strip() for s in sentences if len(s.strip()) > 10]
+    merged: list[str] = []
+    for part in parts:
+        last_word = part.rstrip(".!?").rsplit(None, 1)[-1].lower() if part.rstrip(".!?") else ""
+        if merged and last_word in _ABBREVIATIONS:
+            merged[-1] = merged[-1] + " " + part
+        elif merged and len(part.strip()) <= 10:
+            merged[-1] = merged[-1] + " " + part
+        else:
+            merged.append(part)
+
+    return [s.strip() for s in merged if len(s.strip()) > 10]

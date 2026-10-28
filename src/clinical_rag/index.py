@@ -1,7 +1,7 @@
 from __future__ import annotations
 
+import json
 import logging
-import pickle
 from pathlib import Path
 
 import faiss
@@ -13,9 +13,11 @@ from clinical_rag.embeddings import ClinicalEmbedder
 
 logger = logging.getLogger(__name__)
 
+DOCUMENTS_FILE = "documents.json"
+
 
 class FAISSIndex:
-    """FAISS index with document metadata store."""
+    """FAISS vector index paired with a JSON document store."""
 
     def __init__(
         self,
@@ -72,28 +74,55 @@ class FAISSIndex:
         return results
 
     def save(self, directory: Path) -> None:
-        """Persist the index and metadata to disk."""
+        """Persist the index and document metadata to disk."""
         directory.mkdir(parents=True, exist_ok=True)
 
         faiss.write_index(self.index, str(directory / "index.faiss"))
 
-        with open(directory / "documents.pkl", "wb") as f:
-            pickle.dump(self.documents, f)
+        serialized = [
+            {"page_content": doc.page_content, "metadata": doc.metadata}
+            for doc in self.documents
+        ]
+        with open(directory / DOCUMENTS_FILE, "w") as f:
+            json.dump(serialized, f)
 
-        logger.info("Saved index to %s", directory)
+        logger.info("Saved index (%d vectors) to %s", self.index.ntotal, directory)
 
     @classmethod
     def load(cls, directory: Path, config: RAGConfig | None = None) -> FAISSIndex:
-        """Load a persisted index."""
+        """Load a persisted index from disk."""
         config = config or RAGConfig()
 
-        index = faiss.read_index(str(directory / "index.faiss"))
+        index_path = directory / "index.faiss"
+        docs_path = directory / DOCUMENTS_FILE
 
-        with open(directory / "documents.pkl", "rb") as f:
-            documents = pickle.load(f)  # noqa: S301
+        if not index_path.exists():
+            raise FileNotFoundError(
+                f"FAISS index not found at {index_path}. "
+                "Run `clinical-rag ingest` to build the index first."
+            )
+        if not docs_path.exists():
+            # Fall back to legacy pickle if JSON doesn't exist yet
+            legacy_path = directory / "documents.pkl"
+            if legacy_path.exists():
+                import pickle
+                logger.warning("Loading legacy pickle store; re-save to migrate to JSON")
+                with open(legacy_path, "rb") as f:
+                    documents = pickle.load(f)  # noqa: S301
+            else:
+                raise FileNotFoundError(
+                    f"Document store not found at {docs_path}. "
+                    "Run `clinical-rag ingest` to build the index first."
+                )
+        else:
+            with open(docs_path) as f:
+                raw = json.load(f)
+            documents = [
+                Document(page_content=d["page_content"], metadata=d.get("metadata", {}))
+                for d in raw
+            ]
 
+        index = faiss.read_index(str(index_path))
         embedder = ClinicalEmbedder(config)
-        logger.info(
-            "Loaded index with %d vectors from %s", index.ntotal, directory
-        )
+        logger.info("Loaded index with %d vectors from %s", index.ntotal, directory)
         return cls(index=index, documents=documents, embedder=embedder)

@@ -1,7 +1,7 @@
 """End-to-end evaluation of the clinical notes RAG pipeline.
 
 Generates synthetic clinical notes, builds a FAISS index with real embeddings,
-runs retrieval queries, and measures recall@k. Also tests the grounding checker
+runs retrieval queries, and measures recall@k. Tests the NLI grounding checker
 on known-grounded and known-ungrounded answer pairs.
 
 All metrics are measured, not fabricated.
@@ -19,7 +19,7 @@ from langchain_core.documents import Document
 sys.path.insert(0, "src")
 
 from clinical_rag.config import RAGConfig
-from clinical_rag.grounding import GroundingChecker, _split_sentences
+from clinical_rag.grounding import GroundingChecker
 from clinical_rag.index import FAISSIndex
 from clinical_rag.ingest.chunker import chunk_documents
 
@@ -410,15 +410,10 @@ def main():
     print(f"    Mean latency: {mean_latency:.1f}ms")
     print(f"    P95 latency:  {p95_latency:.1f}ms")
 
-    # --- Grounding checker evaluation ---
-    # NOTE: The full NLI cross-encoder (nli-deberta-v3-base, 737MB) requires more
-    # disk than available in this environment. We use embedding similarity with the
-    # already-loaded MiniLM model as a lightweight grounding proxy. In production,
-    # the NLI model provides better entailment classification.
-    print("\n[5/5] Running grounding evaluation via embedding similarity ({} test pairs)...".format(len(GROUNDING_TESTS)))
+    # --- NLI Grounding evaluation ---
+    print("\n[5/5] Running NLI grounding evaluation ({} test pairs)...".format(len(GROUNDING_TESTS)))
 
-    embedder = index.embedder
-    grounding_threshold = 0.65
+    checker = GroundingChecker(config)
 
     grounded_scores = []
     ungrounded_scores = []
@@ -426,32 +421,29 @@ def main():
     ungrounded_correct = 0
 
     for test in GROUNDING_TESTS:
-        context_emb = embedder.embed_texts([test["context"]], show_progress=False)[0]
+        ctx_docs = [Document(page_content=test["context"])]
 
-        grounded_emb = embedder.embed_texts([test["answer_grounded"]], show_progress=False)[0]
-        grounded_sim = float(np.dot(context_emb, grounded_emb))
-        grounded_scores.append(grounded_sim)
-        if grounded_sim >= grounding_threshold:
+        g_result = checker.check(test["answer_grounded"], ctx_docs)
+        grounded_scores.append(g_result.score)
+        if g_result.is_grounded:
             grounded_correct += 1
 
-        ungrounded_emb = embedder.embed_texts([test["answer_ungrounded"]], show_progress=False)[0]
-        ungrounded_sim = float(np.dot(context_emb, ungrounded_emb))
-        ungrounded_scores.append(ungrounded_sim)
-        if ungrounded_sim < grounding_threshold:
+        u_result = checker.check(test["answer_ungrounded"], ctx_docs)
+        ungrounded_scores.append(u_result.score)
+        if not u_result.is_grounded:
             ungrounded_correct += 1
 
-    grounding_accuracy = (grounded_correct + ungrounded_correct) / (2 * len(GROUNDING_TESTS))
-    grounded_detection_rate = grounded_correct / len(GROUNDING_TESTS)
-    ungrounded_detection_rate = ungrounded_correct / len(GROUNDING_TESTS)
+    n_tests = len(GROUNDING_TESTS)
+    grounding_accuracy = (grounded_correct + ungrounded_correct) / (2 * n_tests)
+    grounded_detection_rate = grounded_correct / n_tests
+    ungrounded_rejection_rate = ungrounded_correct / n_tests
 
-    print(f"\n  Grounding Results (embedding similarity proxy):")
-    print(f"    Grounded answers correctly identified:   {grounded_correct}/{len(GROUNDING_TESTS)} ({grounded_detection_rate:.1%})")
-    print(f"    Ungrounded answers correctly rejected:   {ungrounded_correct}/{len(GROUNDING_TESTS)} ({ungrounded_detection_rate:.1%})")
-    print(f"    Overall grounding accuracy:              {grounding_accuracy:.1%}")
-    print(f"    Mean similarity (grounded answers):      {np.mean(grounded_scores):.3f}")
-    print(f"    Mean similarity (ungrounded answers):    {np.mean(ungrounded_scores):.3f}")
-    print(f"    Separation (grounded - ungrounded):      {np.mean(grounded_scores) - np.mean(ungrounded_scores):.3f}")
-    print(f"    NOTE: Full NLI model (nli-deberta-v3-base) not used due to disk constraints.")
+    print(f"\n  NLI Grounding Results (nli-deberta-v3-base):")
+    print(f"    Grounded answers correctly accepted:   {grounded_correct}/{n_tests} ({grounded_detection_rate:.1%})")
+    print(f"    Ungrounded answers correctly rejected:  {ungrounded_correct}/{n_tests} ({ungrounded_rejection_rate:.1%})")
+    print(f"    Overall grounding accuracy:             {grounding_accuracy:.1%}")
+    print(f"    Mean entailment score (grounded):       {np.mean(grounded_scores):.3f}")
+    print(f"    Mean entailment score (ungrounded):     {np.mean(ungrounded_scores):.3f}")
 
     # --- Summary ---
     print("\n" + "=" * 70)
@@ -462,21 +454,26 @@ def main():
         "chunks_created": len(chunks),
         "vectors_indexed": index.index.ntotal,
         "embedding_model": config.embedding_model,
+        "grounding_model": config.grounding_model,
         "queries_evaluated": len(EVAL_QUERIES),
         "recall_at_5": round(mean_recall_5, 3),
         "recall_at_10": round(mean_recall_10, 3),
         "recall_at_20": round(mean_recall_20, 3),
         "mean_retrieval_latency_ms": round(mean_latency, 1),
         "p95_retrieval_latency_ms": round(p95_latency, 1),
-        "grounding_tests": len(GROUNDING_TESTS),
+        "grounding_tests": n_tests,
         "grounded_detection_rate": round(grounded_detection_rate, 3),
-        "ungrounded_rejection_rate": round(ungrounded_detection_rate, 3),
+        "ungrounded_rejection_rate": round(ungrounded_rejection_rate, 3),
         "grounding_accuracy": round(grounding_accuracy, 3),
+        "mean_entailment_grounded": round(float(np.mean(grounded_scores)), 3),
+        "mean_entailment_ungrounded": round(float(np.mean(ungrounded_scores)), 3),
     }
     for k, v in summary.items():
         print(f"  {k}: {v}")
 
     # Save results to file
+    import os
+    os.makedirs("results", exist_ok=True)
     with open("results/e2e_eval_results.json", "w") as f:
         json.dump(summary, f, indent=2)
     print(f"\nResults saved to results/e2e_eval_results.json")
@@ -485,6 +482,4 @@ def main():
 
 
 if __name__ == "__main__":
-    import os
-    os.makedirs("results", exist_ok=True)
     summary = main()
