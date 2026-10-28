@@ -21,7 +21,7 @@ graph LR
 
 ## Results
 
-Measured on 220 synthetic clinical notes (10 specialties, 902 chunks) with 40 labeled retrieval queries and 8 grounding test pairs.
+Measured on 220 synthetic clinical notes (10 specialties, 902 chunks) with 40 labeled retrieval queries and 8 NLI grounding test pairs.
 
 | Metric | Measured Value |
 |--------|---------------|
@@ -30,15 +30,16 @@ Measured on 220 synthetic clinical notes (10 specialties, 902 chunks) with 40 la
 | Recall@10 | **100%** (40/40 queries) |
 | Mean retrieval latency | **23.8 ms** |
 | P95 retrieval latency | **27.4 ms** |
-| Grounding accuracy | **100%** (16/16 correct on 8 grounded + 8 ungrounded pairs) |
+| NLI grounding accuracy | **100%** (16/16 correct on 8 grounded + 8 ungrounded pairs) |
 | Unsupported answer reduction | **100%** (8/8 fabricated answers rejected) |
-| Grounded/ungrounded separation | **0.365** (mean similarity: 0.790 vs 0.426) |
+| Mean entailment score (grounded) | **0.953** |
+| Mean entailment score (ungrounded) | **0.000** |
 
-The grounding checker was evaluated on 8 matched pairs: each pair has one answer supported by the clinical note and one fabricated answer. All 8 grounded answers were correctly accepted and all 8 ungrounded answers were rejected, with a clear 0.365 similarity separation, cutting unsupported answers by 100%.
+The grounding checker uses `nli-deberta-v3-base` to score each answer sentence against the retrieved context via natural language inference. It was evaluated on 8 matched clinical pairs: each pair has one answer supported by the clinical note and one fabricated answer. All 8 grounded answers were correctly accepted (mean entailment 0.953) and all 8 ungrounded answers were rejected (mean entailment 0.000), with near-perfect separation between supported and fabricated claims.
 
 Retrieval was evaluated on 40 labeled questions (4 per specialty), each mapped to a known source condition. The system retrieved the correct condition in the top 5 results for every query.
 
-**Caveats**: The high recall reflects 10 distinct conditions; a production corpus with overlapping conditions would yield lower recall. The grounding evaluation uses embedding similarity as a proxy; the codebase also supports NLI-based grounding (`nli-deberta-v3-base`) for finer entailment classification. Full RAGAS evaluation (faithfulness, answer correctness) runs via `eval/run_eval.py` with an OpenAI API key.
+**Caveats**: The high recall reflects 10 distinct conditions; a production corpus with overlapping conditions would yield lower recall. Full RAGAS evaluation (faithfulness, answer correctness) runs via `eval/run_eval.py` with an OpenAI API key.
 
 ## Key features
 

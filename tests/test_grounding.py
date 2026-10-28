@@ -27,8 +27,8 @@ class TestGroundingChecker:
     def test_grounded_answer(self, mock_ce_cls):
         mock_model = MagicMock()
         mock_model.predict.return_value = np.array([
-            [0.05, 0.10, 0.85],
-            [0.03, 0.12, 0.85],
+            [0.05, 0.85, 0.10],
+            [0.03, 0.85, 0.12],
         ])
         mock_ce_cls.return_value = mock_model
 

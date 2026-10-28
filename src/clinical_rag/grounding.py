@@ -25,12 +25,10 @@ class GroundingChecker:
     by scoring each answer sentence against the concatenated context with a
     natural language inference cross-encoder.
 
-    Labels: 0 = contradiction, 1 = neutral, 2 = entailment.
-    The grounding score is the fraction of answer sentences classified as
-    entailed by the context.
+    Labels (nli-deberta-v3-base): 0 = contradiction, 1 = entailment, 2 = neutral.
     """
 
-    ENTAILMENT_IDX = 2
+    ENTAILMENT_IDX = 1
 
     def __init__(self, config: RAGConfig | None = None):
         self.config = config or RAGConfig()
